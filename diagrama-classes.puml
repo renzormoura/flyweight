@@ -1,0 +1,32 @@
+@startuml
+title Padrão Flyweight - Floresta
+skinparam classAttributeIconSize 0
+class Floresta {
+  -arvores: List<Arvore>
+  +plantar(x: int, y: int, especie: String, cor: String): void
+  +getArvores(): List<Arvore>
+  +obterArvores(): List<String>
+}
+class Arvore {
+  -x: int
+  -y: int
+  -tipo: TipoArvore
+  +getTipo(): TipoArvore
+  +obterArvore(): String
+}
+class TipoArvore <<flyweight>> {
+  -especie: String
+  -cor: String
+  +getEspecie(): String
+  +getCor(): String
+}
+class TipoArvoreFactory {
+  -{static} tipos: Map<String, TipoArvore>
+  +{static} getTipoArvore(especie: String, cor: String): TipoArvore
+  +{static} getTotalTipos(): int
+}
+Floresta o--> "*" Arvore
+Arvore --> TipoArvore : compartilha
+Floresta ..> TipoArvoreFactory : usa
+TipoArvoreFactory o--> "*" TipoArvore : cache
+@enduml
